@@ -1,0 +1,42 @@
+name: Build playlist
+
+on:
+  schedule:
+    - cron: "17 9 * * *"   # every day, 09:17 UTC (4:17 am Chicago)
+  workflow_dispatch:
+
+permissions:
+  contents: write   # the daily summary.txt commit, which also keeps the schedule from being paused
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build
+        run: python3 -I build.py site
+      - name: Record today's summary
+        run: |
+          cp site/summary.txt summary.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add summary.txt
+          git commit -m "Daily build" && git push || echo "nothing to commit"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4
