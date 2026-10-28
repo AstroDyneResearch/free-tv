@@ -5,7 +5,7 @@
 
 Every source is read as plain text; nothing downloaded is run. A channel offered by several services is kept
 once, from the first source in SOURCES that has it (the ones with a guide come first), and takes its category
-from whichever copy has one. Edit CATEGORIES, RULES or LOCAL_KEEP below to change the result.
+from whichever copy has one. Edit CATEGORIES, RULES, LOCAL_KEEP or PLACES below to change the result.
 """
 import gzip
 import io
@@ -46,7 +46,7 @@ SOURCES = [
 # The groups TiviMate shows, in this order.
 CATEGORIES = ["News", "Local", "Sports", "Movies", "Drama & Crime", "Reality", "Comedy", "Classic TV",
               "Game Shows", "Food & Home", "Travel & Nature", "Entertainment", "Kids & Family", "Music",
-              "Español", "International"]
+              "Español", "International", "Other Cities"]
 
 # A source's own group name, or failing that the channel's name, is matched against these in order.
 RULES = [
@@ -82,8 +82,26 @@ RULES = [
     ("Entertainment", r"entertainment|lifestyle|\btv\b|featured|recommended|black voices|new on"),
 ]
 
-# Local stations: keep only these places, out of the hundreds of cities the services carry.
+# Local stations from here go in "Local"; those from everywhere else go in "Other Cities", at the end.
 LOCAL_KEEP = r"chicago|illinois|\bwgn\b|\bwls\b|\bwbbm\b|\bwmaq\b|\bwfld\b|\bwttw\b"
+# A news channel named after one of these is a local station: states and the larger cities.
+PLACES = (r"alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|"
+          r"idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|"
+          r"minnesota|mississippi|missouri|montana|nebraska|nevada|new hampshire|new jersey|new mexico|new york|"
+          r"carolina|dakota|ohio|oklahoma|oregon|pennsylvania|rhode island|tennessee|texas|utah|vermont|"
+          r"virginia|washington|wisconsin|wyoming|atlanta|austin|baltimore|boston|buffalo|charlotte|chicago|"
+          r"cincinnati|cleveland|columbus|dallas|denver|detroit|el paso|fort myers|fresno|houston|"
+          r"indianapolis|jacksonville|kansas city|las vegas|los angeles|\bla\b|louisville|memphis|miami|"
+          r"milwaukee|minneapolis|nashville|new orleans|norfolk|oakland|omaha|orlando|philadelphia|phoenix|"
+          r"pittsburgh|portland|raleigh|sacramento|salt lake|san antonio|san diego|san francisco|bay area|"
+          r"sarasota|seattle|spokane|st\.? louis|tampa|tucson|tulsa|twin cities|\bdc\b|\bnyc\b|bakersfield|"
+          r"albuquerque|birmingham|boise|charleston|des moines|grand rapids|green bay|greenville|hartford|"
+          r"honolulu|knoxville|lexington|little rock|madison|mobile|oklahoma city|providence|richmond|"
+          r"rochester|savannah|syracuse|toledo|wichita|first coast|gulf coast|central valley|hudson valley")
+# Names that mention a place but are national: never moved to a local group.
+NATIONAL = r"\bpost\b|\btimes\b|journal|bloomberg|\bcnn\b|walker|ranger|\bvice\b|housewives|hot bench"
+# "ABC7 Sarasota", "NBC 5 Chicago News", "FOX 32": a network affiliate.
+AFFILIATE = r"\b(abc|nbc|cbs|fox|cw|pbs)\s?\d{1,2}\b"
 # Groups dropped entirely.
 DROP_GROUPS = r"shopping"
 # A US station's call sign ("KSHB", "WGN-TV") or "FOX 2 Oakland": a local station, kept only for LOCAL_KEEP.
@@ -146,6 +164,16 @@ def classify(text):
     return None
 
 
+def place_local(name, cat):
+    """A local station goes in "Local" when it is from LOCAL_KEEP, else in "Other Cities"; others keep cat."""
+    newsy = cat in ("News", "Local") or re.search(r"news|weather", name, re.I)
+    local = (cat == "Local" or re.search(CALL_SIGN, name) or re.search(AFFILIATE, name, re.I)
+             or (newsy and re.search(PLACES, name, re.I) and not re.search(NATIONAL, name, re.I)))
+    if not local:
+        return cat
+    return "Local" if re.search(LOCAL_KEEP, name, re.I) else "Other Cities"
+
+
 def main():
     out = Path(sys.argv[1] if len(sys.argv) > 1 else "site")
     out.mkdir(parents=True, exist_ok=True)
@@ -168,10 +196,7 @@ def main():
             cat = classify(group)
             if cat in (None, "Entertainment"):  # a general group says little: the name may say more
                 cat = classify(name) or cat or default
-            if re.search(CALL_SIGN, name):
-                cat = "Local"
-            if cat == "Local" and not re.search(LOCAL_KEEP, name, re.I):
-                continue
+            cat = place_local(name, cat)
             k = key(name) or name.lower()
             if k in chosen:
                 if cat and chosen[k]["cat"] in (None, "Entertainment"):
@@ -184,9 +209,7 @@ def main():
         counts[label] = f"{kept} of {len(entries)}"
 
     for ch in chosen.values():
-        ch["cat"] = ch["cat"] or classify(ch["name"]) or "Entertainment"
-        if ch["cat"] == "Local" and not re.search(LOCAL_KEEP, ch["name"], re.I):
-            ch["cat"] = "News"
+        ch["cat"] = place_local(ch["name"], ch["cat"] or classify(ch["name"]) or "Entertainment")
 
     order = {c: i for i, c in enumerate(CATEGORIES)}
     chans = sorted(chosen.values(), key=lambda c: (order.get(c["cat"], 99), c["name"].lower()))
@@ -228,7 +251,7 @@ def main():
     summary = [f"Built {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())}",
                f"{len(chans)} channels, {len(want)} with a guide, {progs} guide entries", "",
                "By category:"] + [f"  {c}: {per_cat.get(c, 0)}" for c in CATEGORIES] + \
-              ["", "By source (kept of offered; the rest were duplicates or other cities):"] + \
+              ["", "By source (kept of offered; the rest were duplicates):"] + \
               [f"  {k}: {v}" for k, v in counts.items()]
     (out / "summary.txt").write_text("\n".join(summary) + "\n", encoding="utf-8")
     print("\n".join(summary))
