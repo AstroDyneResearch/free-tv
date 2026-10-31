@@ -1,11 +1,11 @@
-Built 2026-10-30 15:55 UTC
-2552 channels, 1367 with a guide, 41909 guide entries
+Built 2026-10-31 15:19 UTC
+2551 channels, 1369 with a guide, 45709 guide entries
 
 By category:
   News: 79
   Local: 5
-  Sports: 261
-  Movies: 212
+  Sports: 260
+  Movies: 213
   Drama & Crime: 185
   Reality: 133
   Comedy: 75
@@ -18,17 +18,17 @@ By category:
   Music: 133
   Español: 156
   International: 86
-  Other Cities: 455
+  Other Cities: 454
 
 By source (kept of offered; the rest were duplicates):
   Pluto: 426 of 433
   Samsung: 438 of 588
-  Roku: 148 of 255
-  Tubi: 59 of 181
-  Plex: 296 of 693
-  Xumo: 107 of 389
+  Roku: 150 of 257
+  Tubi: 60 of 182
+  Plex: 295 of 692
+  Xumo: 105 of 389
   Vizio: 114 of 433
-  LG: 66 of 459
+  LG: 65 of 459
   TCL: 105 of 494
   Local Now: 264 of 447
   Distro: 241 of 336
