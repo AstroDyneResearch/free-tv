@@ -1,5 +1,5 @@
-Built 2026-11-18 18:02 UTC
-2713 channels, 1403 with a guide, 54328 guide entries
+Built 2026-11-19 18:15 UTC
+2713 channels, 1403 with a guide, 52897 guide entries
 
 By category:
   News: 80
