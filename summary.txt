@@ -1,12 +1,12 @@
-Built 2026-11-25 19:57 UTC
-1395 channels, 1395 with a guide, 53283 guide entries
+Built 2026-11-26 19:42 UTC
+1397 channels, 1397 with a guide, 37731 guide entries
 
 By category:
   News: 38
   Local: 1
   Sports: 123
   Movies: 149
-  Drama & Crime: 144
+  Drama & Crime: 145
   Reality: 104
   Comedy: 66
   Classic TV: 32
@@ -14,17 +14,17 @@ By category:
   Food & Home: 68
   Travel & Nature: 68
   Entertainment: 184
-  Kids & Family: 97
+  Kids & Family: 98
   Music: 105
   Español: 118
   International: 8
   Other Cities: 39
 
 By source (kept of offered; the rest were duplicates):
-  Pluto: 450 of 458
+  Pluto: 451 of 459
   Samsung: 444 of 594
-  Roku: 152 of 257
-  Tubi: 47 of 176
+  Roku: 153 of 259
+  Tubi: 47 of 177
   Plex: 302 of 702
   Xumo: failed
   Vizio: failed
