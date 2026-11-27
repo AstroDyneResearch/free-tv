@@ -1,40 +1,40 @@
-Built 2026-11-26 19:42 UTC
-1397 channels, 1397 with a guide, 37731 guide entries
+Built 2026-11-27 18:57 UTC
+2707 channels, 1395 with a guide, 29066 guide entries
 
 By category:
-  News: 38
-  Local: 1
-  Sports: 123
-  Movies: 149
-  Drama & Crime: 145
-  Reality: 104
-  Comedy: 66
-  Classic TV: 32
-  Game Shows: 51
-  Food & Home: 68
-  Travel & Nature: 68
-  Entertainment: 184
-  Kids & Family: 98
-  Music: 105
-  Español: 118
-  International: 8
-  Other Cities: 39
+  News: 79
+  Local: 5
+  Sports: 259
+  Movies: 220
+  Drama & Crime: 195
+  Reality: 139
+  Comedy: 77
+  Classic TV: 42
+  Game Shows: 64
+  Food & Home: 100
+  Travel & Nature: 119
+  Entertainment: 357
+  Kids & Family: 125
+  Music: 136
+  Español: 154
+  International: 86
+  Other Cities: 550
 
 By source (kept of offered; the rest were duplicates):
   Pluto: 451 of 459
   Samsung: 444 of 594
-  Roku: 153 of 259
-  Tubi: 47 of 177
-  Plex: 302 of 702
-  Xumo: failed
-  Vizio: failed
-  LG: failed
-  TCL: failed
-  Local Now: failed
-  Distro: failed
-  Whale: failed
-  Fire TV: failed
-  Tablo: failed
-  Cineverse: failed
-  Free Live Sports: failed
-  Sports TV: failed
+  Roku: 150 of 256
+  Tubi: 47 of 176
+  Plex: 303 of 702
+  Xumo: 110 of 389
+  Vizio: 126 of 482
+  LG: 64 of 459
+  TCL: 105 of 494
+  Local Now: 367 of 542
+  Distro: 239 of 336
+  Whale: 61 of 196
+  Fire TV: 42 of 122
+  Tablo: 70 of 166
+  Cineverse: 7 of 29
+  Free Live Sports: 39 of 125
+  Sports TV: 82 of 127
